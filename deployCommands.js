@@ -1,7 +1,17 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
-const { PING, SERVER, USER, DC, PLAY, LIST } = require("./commands");
+const {
+  PING,
+  SERVER,
+  USER,
+  DC,
+  PLAY,
+  LIST,
+  SKIP,
+  PAUSE,
+  RESUME,
+} = require("./commands");
 require("dotenv").config();
 
 const commands = [
@@ -27,6 +37,13 @@ const commands = [
   new SlashCommandBuilder()
     .setName(DC)
     .setDescription("Disconnects from channel"),
+  new SlashCommandBuilder().setName(SKIP).setDescription("Skip current music"),
+  new SlashCommandBuilder()
+    .setName(PAUSE)
+    .setDescription("Pause current music"),
+  new SlashCommandBuilder()
+    .setName(RESUME)
+    .setDescription("Resume currently paused music"),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN);

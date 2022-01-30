@@ -1,11 +1,23 @@
 // Require the necessary discord.js classes
 const { Client, Intents } = require("discord.js");
-const { PING, SERVER, USER, DC, PLAY, LIST } = require("./commands");
+const {
+  PING,
+  SERVER,
+  USER,
+  DC,
+  PLAY,
+  LIST,
+  SKIP,
+  PAUSE,
+  RESUME,
+} = require("./commands");
 require("dotenv").config();
 
+// Yt and voice
 const DiscordVoice = require("@discordjs/voice");
 const { stream } = require("play-dl");
 const yt = require("youtube-search-without-api-key");
+const player = DiscordVoice.createAudioPlayer();
 
 // Create a new client instance
 const client = new Client({
@@ -50,9 +62,8 @@ client.on("interactionCreate", async (interaction) => {
 
     case LIST:
       await interaction.reply(
-        "Current youtube queue " + ytUrlQueue.length > 0
-          ? ytUrlQueue
-          : "is empty"
+        "Current youtube queue " +
+          (ytUrlQueue.length > 0 ? ytUrlQueue : "**is empty**")
       );
       break;
 
@@ -89,6 +100,26 @@ client.on("interactionCreate", async (interaction) => {
       }
       break;
 
+    case SKIP:
+      player.stop();
+      if (ytUrlQueue.length > 0) {
+        playFromYt(ytUrlQueue.at(-1), interaction);
+        await interaction.reply("Resume queue");
+      } else {
+        await interaction.reply("Empty queue");
+      }
+      break;
+
+    case PAUSE:
+      player.pause();
+      await interaction.reply("Paused");
+      break;
+
+    case RESUME:
+      player.unpause();
+      await interaction.reply("Unpaused");
+      break;
+
     default:
       break;
   }
@@ -101,7 +132,6 @@ const playFromYt = async (url, interac) => {
 
   const channel = interac.member.voice.channel;
 
-  const player = DiscordVoice.createAudioPlayer();
   const resource = DiscordVoice.createAudioResource(playStream.stream, {
     inputType: playStream.type,
   });
@@ -126,7 +156,7 @@ const playFromYt = async (url, interac) => {
     } else {
       console.log("Queue has ended, dc from channel");
       playing = false;
-      connection.destroy();
+      //connection.destroy();
     }
   });
 };

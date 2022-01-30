@@ -5,4 +5,7 @@ module.exports = {
   PLAY: "play",
   DC: "dc",
   LIST: "list",
+  SKIP: "skip",
+  PAUSE: "pause",
+  RESUME: "resume",
 };

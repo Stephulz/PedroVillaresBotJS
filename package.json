@@ -27,7 +27,6 @@
     "libsodium-wrappers": "^0.7.9",
     "opusscript": "^0.0.8",
     "play-dl": "^1.8.1",
-    "youtube-search-without-api-key": "^1.0.7",
-    "ytdl-core": "^4.10.0"
+    "youtube-search-without-api-key": "^1.0.7"    
   }
 }
